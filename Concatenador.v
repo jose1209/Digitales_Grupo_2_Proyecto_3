@@ -21,9 +21,9 @@
 module Concatenador(
 	input wire CLK,
 	input wire [N-1:0] ValorSuma,
-	output reg [2*(N-1):0] Suma_ext
+	output reg [2*N-1:0] Suma_ext
     );
-
+parameter N = 24;	
 always@(posedge CLK)
   begin 
     Suma_ext <= $signed(ValorSuma);

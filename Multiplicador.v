@@ -21,9 +21,9 @@
 module Multiplicador(
 	input wire [N-1:0] Multiplicandos,
 	input wire [N-1:0] Constantes,
-	output reg [2*(N-1):0] Multip
+	output reg [2*N-1:0] Multip
     );
-	 
+parameter N = 24;		 
 always@*
 begin
 Multip = (Multiplicandos*Constantes);

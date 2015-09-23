@@ -1,11 +1,11 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
-// Engineer: Jose Gabriel Carmona Rodriguez
+// Engineer: 
 // 
-// Create Date:    15:47:43 09/22/2015 
+// Create Date:    22:44:36 09/22/2015 
 // Design Name: 
-// Module Name:    Sumador 
+// Module Name:    Prueba_Sumador 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,17 +18,18 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Sumador(
-	input wire [2*N-1:0] Sum_ext,Multiplica,
-   output reg [2*N-1:0] Suma_G);
+module Prueba_Sumador(
+    );
 
-always@*
-begin
-
-Suma_G = (Multiplica + Sum_ext);
-
-end
-
+parameter N = 24;		 
 	 
+Sumador instance_SumP (
+    .Sum_ext(Sum_ext), 
+    .Multiplica(Multiplica), 
+    .Suma_G(Suma_G)
+    );
+
+
+
 
 endmodule

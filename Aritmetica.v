@@ -18,11 +18,33 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Aritmetica( );
+module Aritmetica(
+		input wire CLK_G,
+		);
+
+
+
+Concatenador instance_Concatenador (
+    .CLK(CLK_G), 
+    .ValorSuma(ValorSuma), 
+    .Suma_ext(Suma_ext)
+    );
 	
+Multiplicador instance_Multiplicador (
+    .Multiplicandos(Multiplicandos), 
+    .Constantes(Constantes), 
+    .Multip(Multip)
+    );
 	
-	
+Sumador instance_Sumador (
+    .Sum_ext(Sum_ext), 
+    .Multiplica(Multiplica), 
+    .Suma_G(Suma_G)
+    );
+
+Truncamiento instance_Truncamiento (
+    .Datos_Sum(Datos_Sum), 
+    .Datos_Trunc(Datos_Trunc)
+    );
 	 
-
-
 endmodule
