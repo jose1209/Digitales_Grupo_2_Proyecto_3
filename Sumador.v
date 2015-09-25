@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Sumador(
+module Sumador #(parameter N = 24 /* Valor de N*/)(
 	input wire [2*N-1:0] Sum_ext,Multiplica,
    output reg [2*N-1:0] Suma_G);
 
@@ -28,7 +28,5 @@ begin
 Suma_G = (Multiplica + Sum_ext);
 
 end
-
-	 
 
 endmodule

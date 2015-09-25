@@ -21,15 +21,6 @@
 module Prueba_Sumador(
     );
 
-parameter N = 24;		 
-	 
-Sumador instance_SumP (
-    .Sum_ext(Sum_ext), 
-    .Multiplica(Multiplica), 
-    .Suma_G(Suma_G)
-    );
-
-
 
 
 endmodule
