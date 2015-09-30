@@ -19,33 +19,87 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module ControlMux(
-	input wire rst,clk,Bandera;
-	output reg [2:0] sel_const;
-	output reg [1:0] sel_fun;
-	output reg sel_acum;
+	input wire clk,Bandera,
+	output wire [2:0] sel_const,
+	output wire [1:0] sel_fun,
+	output wire sel_acum,Band_Listo
     );
 
 //Varaibles
-reg [2:0] var1;
-reg [1:0] var2;
-reg var3,est_sig,est_act;
+reg [2:0] sel_c,est_sig,est_act;
+reg [1:0] sel_f;
+reg sel_a,Listo;
 
-
-	 
 //Parte Secuencial 
 
-always@(posedge clk, posedge rst)
+always@(posedge clk)
 begin
-	if(rst)
-		begin
-			var1 <= 0;
-			var2 <= 0;
-			var3 <= 0;
-		end
-	else
-		est_sig <= est_act;
+		est_act <= est_sig;
 end
 
+//Parte combinacional 
 
+always@(posedge Bandera)
+begin
+	case(est_act)
+			3'b000:
+				begin
+					sel_c = 0;
+					sel_f = 0;
+					sel_a = 0;
+					est_sig = 3'b001;
+					Listo	= 0;
+				end
+				
+			3'b001:
+				begin 
+					sel_c = 0;
+					sel_f = 2'b01;
+					sel_a = 1;
+					est_sig = 3'b010;
+					Listo	= 0;
+				end
+			
+			3'b010:
+				begin
+					sel_c = 3'b001;
+					sel_f = 2'b10;
+					sel_a = 1;
+					est_sig = 3'b011;
+					Listo	= 0;
+				end
+			
+			3'b011:
+				begin
+					sel_c = 3'b010;
+					sel_f = 0;
+					sel_a = 1;
+					est_sig = 3'b100;
+					Listo	= 0;
+				end
+			
+			3'b100:
+				begin
+					sel_c = 3'b011;
+					sel_f = 2'b01;
+					sel_a = 1;
+					est_sig = 3'b101;
+					Listo	= 0;
+				end
+				
+			3'b101:
+				begin
+					sel_c = 3'b100;
+					sel_f = 2'b10;
+					sel_a = 1;
+					est_sig = 3'b000;
+					Listo	= 1;
+				end
+	endcase	
+end
+
+assign sel_const = sel_c;
+assign sel_fun = sel_f;
+assign sel_acum = sel_a;
 
 endmodule
