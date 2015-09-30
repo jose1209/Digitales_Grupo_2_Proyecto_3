@@ -22,7 +22,7 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-module TB_Sumador #(parameter N = 24);
+module TB_Sumador #(parameter N = 25);
 
 	// Inputs
 	reg [2*N-1:0] Sum_ext;
@@ -54,8 +54,8 @@ module TB_Sumador #(parameter N = 24);
 			begin
 				Multiplica = Array_IN1[j]; 
 				Sum_ext = Array_IN2[j];
-				$fwrite(Suma,"%b \n",Sum_ext+Multiplica);
-				
+				#10;
+				$fwrite(Suma,"%b \n",Suma_G);	
 			end
 			
 	$fclose(Suma);	

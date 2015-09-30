@@ -18,33 +18,27 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Aritmetica(
-		input wire CLK_G,
-		);
-
-
-
+module Aritmetica #(parameter N = 25 /* Valor de N*/)(
+	input wire [N-1:0] Constantes_G,Multip_G,Entrada_G,
+	output wire [N-1:0] Valores
+	);
+wire [2*N-1:0] Ext_Sign,Res_Sum;	
+		
 Concatenador instance_Concatenador (
-    .CLK(CLK_G), 
-    .ValorSuma(ValorSuma), 
-    .Suma_ext(Suma_ext)
-    );
-	
-Multiplicador instance_Multiplicador (
-    .Multiplicandos(Multiplicandos), 
-    .Constantes(Constantes), 
-    .Multip(Multip)
-    );
-	
-Sumador instance_Sumador (
-    .Sum_ext(Sum_ext), 
-    .Multiplica(Multiplica), 
-    .Suma_G(Suma_G)
+    .ValorSuma(Entrada_G), 
+    .Suma_ext(Ext_Sign)
     );
 
-Truncamiento instance_Truncamiento (
-    .Datos_Sum(Datos_Sum), 
-    .Datos_Trunc(Datos_Trunc)
+Sumador instance_Sum_Mul (
+    .Sum_ext(Ext_Sign), 
+    .Multiplicandos(Multip_G), 
+    .Constantes(Constantes_G), 
+    .Suma_G(Res_Sum)
     );
-	 
+
+Truncamiento instance_Trucamiento(
+    .Datos_Sum(Res_Sum), 
+    .Datos_Trunc(Valores)
+    );
+
 endmodule

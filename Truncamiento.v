@@ -18,48 +18,49 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Truncamiento(
+module Truncamiento #(parameter N = 25 /* Valor de N*/)(
 	input wire [2*N-1:0] Datos_Sum,
 	output reg [N-1:0] Datos_Trunc
    );
-	parameter N = 24;	
+	
 	parameter 			//Parte de magnitud salida
-	MA = 5,
-	MB = 6,
-	FA = 7,
-	FB = 8;
+	MA = 4,
+	MB = 4,
+	FA = 20,
+	FB = 20;
 	
 	localparam[2*N-3:FB+FA+MB]
 	COM_A = ~0,
 	COM_B = 0;
 	
+	localparam[N-1:0]
+	Sat_A = 0,
+	Sat_B = ~0;
+	
 
 	always@*
 	begin
-
-		Datos_Trunc[N-1] = Datos_Sum[2*N-2];
-		
 		if (Datos_Sum[2*N-2] == 1 && Datos_Sum[2*N-3:FB+FA+MB] == COM_A)
 		begin
-			Datos_Trunc[N-2:MB+FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
-			Datos_Trunc[(MB+FA)-1:0] = Datos_Sum[(FA+FB)-1:FB];
+			Datos_Trunc[N-1] = Datos_Sum[2*N-2];
+			Datos_Trunc[N-2:FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
+			Datos_Trunc[FA-1:0] = Datos_Sum[(FA+FB)-1:FB];	
 		end
-		else 
-		begin
-			Datos_Trunc[N-2:MB+FA] = COM_A;
-			Datos_Trunc[(MB+FA)-1:0] = COM_A;
-		end
+		else if(Datos_Sum[2*N-2] == 0 && ~(Datos_Sum[2*N-3:FB+FA+MB] == COM_B))
+			begin
+				Datos_Trunc[N-1:0] = Sat_B;
+			end
 		
-		if(Datos_Sum[2*N-2] == 0 && Datos_Sum[2*N-3:FB+FA+MB] == COM_B)
+		else if(Datos_Sum[2*N-2] == 0 && Datos_Sum[2*N-3:FB+FA+MB] == COM_B)
 		begin
-			Datos_Trunc[N-2:MB+FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
-			Datos_Trunc[(MB+FA)-1:0] = Datos_Sum[(FA+FB)-1:FB];
+			Datos_Trunc[N-1] = Datos_Sum[2*N-2];
+			Datos_Trunc[N-2:FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
+			Datos_Trunc[FA-1:0] = Datos_Sum[(FA+FB)-1:FB];
 		end
 		else 
-		begin
-			Datos_Trunc[N-2:MB+FA] = COM_B;
-			Datos_Trunc[(MB+FA)-1:0] = COM_B;
-		end
+			begin
+				Datos_Trunc[N-1:0] = Sat_A;
+			end
 	end
 	
 endmodule
