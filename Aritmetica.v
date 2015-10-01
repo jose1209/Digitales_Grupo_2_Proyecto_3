@@ -34,7 +34,5 @@ Sumador instance_Sum_Mul (
     .Multiplicandos(Multip_G), 
     .Constantes(Constantes_G), 
     .Suma_G(Valores));
-   
-
 
 endmodule
