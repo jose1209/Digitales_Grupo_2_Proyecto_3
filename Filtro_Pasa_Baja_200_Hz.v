@@ -22,13 +22,15 @@ module Filtro_Pasa_Baja_200_Hz #(parameter N = 25 /* Valor de N*/)(
 	input wire [N-1:0] Uk,
 	input wire Clk,Bandera_ADC,
 	output wire [N-1:0] Yk,
-	output wire Bandera_Listo
+	output wire Bandera_Listo,Senal,
+	output wire [2*N-1:0] Prueba
     );
 
 wire [2:0] SelectorConst;
 wire [1:0] SelectorFk;
 wire [N-1:0] Const,InAcum,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2;
 wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2;
+wire Sig;
 
 ControlMux instance_Control(
     .clk(Clk), 
@@ -36,7 +38,8 @@ ControlMux instance_Control(
     .sel_const(SelectorConst), 
     .sel_fun(SelectorFk), 		
     .sel_acum(sel_acum),   
-    .Band_Listo(Bandera_Listo)
+    .Band_Listo(Bandera_Listo),
+	 .Signal(Sig)
     );
 
 Mux_Constantes instance_MuxConstantes (
@@ -77,7 +80,8 @@ Shift_Reg instance_Shift_Reg (
 Acumulador instance_Acumulador (
     .In(ResultArim), 
     .clk(Clk), 
-    .Acumulado(Racum)		
+    .Acumulado(Racum),	
+	 .Signal(Sig)
     );
 	 
 Truncamiento instance_TruncamientoFk (
@@ -101,4 +105,6 @@ Truncamiento instance_TruncamientoAcum (
     );
 
 assign Yk = Trunacum; 
+assign Prueba = ResultArim;
+assign Senal = Sig;
 endmodule

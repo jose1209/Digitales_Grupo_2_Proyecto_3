@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    22:37:46 09/30/2015 
+// Create Date:    11:26:03 10/06/2015 
 // Design Name: 
-// Module Name:    Shift_Reg 
+// Module Name:    Registro_Suma 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,31 +18,27 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Shift_Reg #(parameter N = 25)(
-	input wire[2*N-1:0] In,
-	input wire shift,
-	output wire[2*N-1:0] fk,fk_1,fk_2
-    );	 
-
-reg [2*N-1:0] fk_old1,fk_old2,fk_ac;
+module Registro_Suma #(parameter N = 25 /* Valor de N*/)(
+	input wire [2*N-1:0] Suma,
+	input wire Enable,clk,
+	output wire [2*N-1:0] Signreg
+    );
+	 
+reg [2*N-1:0] Registro;
 
 initial
 begin
-fk_old1 = 0;
-fk_old2 = 0;
-fk_ac = 0;
+Registro = 0;
 end
-
-always@(posedge shift)
-begin
-fk_ac <= In;
-fk_old1 <= fk;	
-fk_old2 <= fk_1;
-end
-
-assign fk = fk_ac;
-assign fk_1 = fk_old1;
-assign fk_2 = fk_old2;
+	 
+	always@(posedge clk)
+		begin
+			if(Enable)
+				Registro <= Registro;
+			else
+				Registro <= Suma;
+		end
+		
+assign Signreg = Registro;
 
 endmodule
-

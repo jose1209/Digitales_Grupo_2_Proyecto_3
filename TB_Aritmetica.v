@@ -51,7 +51,7 @@ module TB_Aritmetica #(parameter N = 25);
 	$readmemb("Bin1G.txt", Array_IN1,0,4999);
 	$readmemb("Bin2G.txt", Array_IN2,0,4999);
 	$readmemb("Bin3G.txt", Array_IN3,0,4999);
-	Res_Fin= $fopen("Resultados_Fin.txt","w"); //Crea el archivo suma donde se guarda el resultado
+	Res_Fin= $fopen("Resultados_Fin.txt","w"); //Crea el archivo Aritmetica donde se guarda el resultado
 	
 	
 		for(j=0; j<5000; j=j+1) 

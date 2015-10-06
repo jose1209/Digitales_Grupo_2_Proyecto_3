@@ -21,19 +21,28 @@
 module Acumulador #(parameter N = 25 /* Valor de N*/)(
 	input wire [2*N-1:0] In,
 	input wire clk,
-	output wire [2*N-1:0] Acumulado
+	output wire [2*N-1:0] Acumulado,
+	output wire Signal
     );
 
 reg [2*N-1:0] Acum;
+reg Senal;
 
 always@(posedge clk)
 	begin 
 		if(In == Acum)
-			Acum <= Acum;
+			begin
+				Acum <= Acum;
+				Senal <= 1'b0;
+			end
 		else
-			Acum <= In;
+			begin
+				Acum <= In;
+				Senal <= 1'b1;
+			end
 	end
 
 assign Acumulado = Acum;
+assign Signal = Senal;
 
 endmodule

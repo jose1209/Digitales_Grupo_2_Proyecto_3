@@ -24,10 +24,10 @@ module Truncamiento #(parameter N = 25 /* Valor de N*/)(
    );
 	
 	parameter 			//Parte de magnitud salida
-	MA = 4,
-	MB = 4,
-	FA = 20,
-	FB = 20;
+	MA = 5,
+	MB = 10,
+	FA = 14,
+	FB = 19;
 	
 	localparam[2*N-3:FB+FA+MB]
 	COM_A = ~0,
