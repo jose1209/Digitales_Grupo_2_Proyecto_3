@@ -27,7 +27,7 @@ module Filtro_Pasa_Baja_200_Hz #(parameter N = 25 /* Valor de N*/)(
 
 wire [2:0] SelectorConst;
 wire [1:0] SelectorFk;
-wire [N-1:0] Const,InAcum,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2;
+wire [N-1:0] Const,InAcum,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2,reg_cst,reg_Acum,reg_Fk;
 wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2,Signregis;
 
 
@@ -42,24 +42,45 @@ ControlMux instance_Control(
 
 Mux_Constantes instance_MuxConstantes (
     .selector(SelectorConst), 
-    .Constantes(Const)		
+    .Constantes(Const/*reg_cst*/)		
     );
-	 
+	/* 
+Registro_Entradas instance_Reg_Const(
+    .In(reg_cst), 
+    .Enable(Bandera_Listo), 
+    .clk(Clk), 
+    .Signreg(Const)
+    );
+	 */
 Mux_Ac instance_Mux_Acum (
     .select(sel_acum), 
     .Uk(Uk), 
     .Acum(Trunacum), 
-    .Y(InAcum)			
+    .Y(InAcum /*reg_Acum*/)			
     );
+	/* 
+Registro_Entradas instance_Reg_Acum(
+    .In(reg_Acum), 
+    .Enable(Bandera_Listo), 
+    .clk(Clk), 
+    .Signreg(InAcum)
+    );*/
 
 Mux_Fk instance_Mux_Fk (
     .select(SelectorFk), 
     .fk(Trunfk), 					
     .fk_1(Trunfk_1), 				
     .fk_2(Trunfk_2), 			
-    .Y(InMul)					
+    .Y(InMul /*reg_Fk*/)					
     );
-	 
+	/* 
+Registro_Entradas instance_Reg_Fk (
+    .In(reg_Fk), 
+    .Enable(Bandera_Listo), 
+    .clk(Clk), 
+    .Signreg(InMul)
+    );*/
+
 Aritmetica instance_Aritmetica (
     .Constantes_G(Const), 
     .Multip_G(InMul), 
@@ -92,29 +113,25 @@ Acumulador instance_Acumulador (
 Truncamiento instance_TruncamientoFk (
     .Datos_Sum(Rfk), 
     .Datos_Trunc(Trunfk),
-	 .Ban_List(Bandera_Listo),
-	 .clk(Clk)
+	 .Ban_List(Bandera_Listo)
     );
 
 Truncamiento instance_TruncamientoFk_1 (
     .Datos_Sum(Rfk_1), 
     .Datos_Trunc(Trunfk_1),
-	 .Ban_List(Bandera_Listo),
-	 .clk(Clk)
+	 .Ban_List(Bandera_Listo)
     );
 
 Truncamiento instance_TruncamientoFk_2 (
     .Datos_Sum(Rfk_2), 
     .Datos_Trunc(Trunfk_2),
-	 .Ban_List(Bandera_Listo),
-	 .clk(Clk)
+	 .Ban_List(Bandera_Listo)
     );
 
 Truncamiento instance_TruncamientoAcum (
     .Datos_Sum(Racum), 
     .Datos_Trunc(Trunacum),
-	 .Ban_List(Bandera_Listo),
-	 .clk(Clk)
+	 .Ban_List(Bandera_Listo)
     );
 
 assign Yk = Trunacum; 

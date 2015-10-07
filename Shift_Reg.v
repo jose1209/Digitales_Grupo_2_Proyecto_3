@@ -28,10 +28,14 @@ reg [2*N-1:0] fk_old1,fk_old2,fk_ac;
 
 initial
 begin
-fk_ac = 0;
-fk_old1 = 0;
-fk_old2 = 0;
+fk_ac = 50'b0;
+fk_old1 = 50'b0;
+fk_old2 = 50'b0;
 end
+
+assign fk = fk_ac;
+assign fk_1 = fk_old1;
+assign fk_2 = fk_old2;
 
 always@(posedge clk)
 begin
@@ -43,15 +47,11 @@ fk_old2 <= fk_old1;
 end
 else
 begin
-fk_ac <= In;
+fk_ac <= fk_ac;
 fk_old1 <= fk_old1;
 fk_old2 <= fk_old2;
 end
 end
-
-assign fk = fk_ac;
-assign fk_1 = fk_old1;
-assign fk_2 = fk_old2;
 
 endmodule
 

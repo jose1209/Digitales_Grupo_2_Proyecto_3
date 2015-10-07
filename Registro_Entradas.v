@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    11:26:03 10/06/2015 
+// Create Date:    11:23:06 10/07/2015 
 // Design Name: 
-// Module Name:    Registro_Suma 
+// Module Name:    Registro_Entradas 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,26 +18,27 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Registro_Suma #(parameter N = 25 /* Valor de N*/)(
-	input wire [2*N-1:0] Suma,
+module Registro_Entradas #(parameter N = 25 /* Valor de N*/)(
+	input wire [N-1:0] In,
 	input wire Enable,clk,
-	output wire [2*N-1:0] Signreg
+	output wire [N-1:0] Signreg
     );
-
-reg [2*N-1:0] Reg;
-
-
-
+	 
+	reg [N-1:0] Reg;
+	
+	initial
+	begin
+	Reg = 0;
+	end
+	
 	always@(posedge clk)
 		begin
-			Reg <= 0;
-			if(Enable)
+			if(In == Reg)
 				Reg <= Reg;
 			else
-				Reg <= Suma;
+				Reg <= In;
 		end
 		
 assign Signreg = Reg;
 
 endmodule
-

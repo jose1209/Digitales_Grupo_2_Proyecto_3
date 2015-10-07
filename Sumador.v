@@ -21,14 +21,18 @@
 module Sumador #(parameter N = 25 /* Valor de N*/)(
 	input wire [2*N-1:0] Sum_ext,
 	input wire [N-1:0] Multiplicandos,Constantes,
-   output reg [2*N-1:0] Suma_G);
+   output reg [2*N-1:0] Suma_G
+	);
 
- reg [2*N-1:0] Multip;
+initial
+begin
+Suma_G = 0;
+end
 
 always@*
 begin
-Multip = (Multiplicandos*Constantes);
-Suma_G = (Multip + Sum_ext);
+
+Suma_G = (Multiplicandos*Constantes + Sum_ext);
 
 end
 
