@@ -33,7 +33,7 @@ module Truncamiento #(parameter N = 25 /* Valor de N*/)(
 	COM_A = ~0,
 	COM_B = 0;
 	
-	localparam[N-1:0]
+	localparam[N-2:0]
 	Sat_A = 0,
 	Sat_B = ~0;
 	
@@ -48,7 +48,8 @@ module Truncamiento #(parameter N = 25 /* Valor de N*/)(
 		end
 		else if(Datos_Sum[2*N-2] == 0 && ~(Datos_Sum[2*N-3:FB+FA+MB] == COM_B))
 			begin
-				Datos_Trunc[N-1:0] = Sat_B;
+				Datos_Trunc[N-1:N-2] = Datos_Sum[2*N-2];
+				Datos_Trunc[N-2:0] = Sat_A;
 			end
 		
 		else if(Datos_Sum[2*N-2] == 0 && Datos_Sum[2*N-3:FB+FA+MB] == COM_B)
@@ -59,7 +60,8 @@ module Truncamiento #(parameter N = 25 /* Valor de N*/)(
 		end
 		else 
 			begin
-				Datos_Trunc[N-1:0] = Sat_A;
+				Datos_Trunc[N-1:N-2] = Datos_Sum[2*N-2];
+				Datos_Trunc[N-2:0] = Sat_B;
 			end
 	end
 	

@@ -28,9 +28,9 @@ reg [2*N-1:0] fk_old1,fk_old2,fk_ac;
 
 initial
 begin
+fk_ac = 0;
 fk_old1 = 0;
 fk_old2 = 0;
-fk_ac = 0;
 end
 
 always@(posedge shift)

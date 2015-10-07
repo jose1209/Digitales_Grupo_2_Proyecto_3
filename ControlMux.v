@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module ControlMux(
-	input wire Bandera,clk,Signal,
+	input wire Bandera,clk,
 	output wire [2:0] sel_const,
 	output wire [1:0] sel_fun,
 	output wire sel_acum,Band_Listo
@@ -32,9 +32,6 @@ reg sel_a,Listo;
 integer contador;
 initial
 begin
-sel_c=0;
-sel_f=0;
-sel_a=0;
 Listo=0;
 end
 
@@ -58,7 +55,7 @@ end
 
 always@*
 begin
-if (contador <= 5)
+if (contador <= 6)
 begin
  case(est_act)
  3'b000:
@@ -66,8 +63,9 @@ begin
  sel_c = 0;
  sel_f = 0;
  sel_a = 0;
- est_sig = 3'b001;
  Listo = 0;
+ est_sig = 3'b001;
+ 
  end
  
  3'b001:
@@ -75,8 +73,9 @@ begin
  sel_c = 3'b001;
  sel_f = 2'b01;
  sel_a = 1;
- est_sig = 3'b010;
  Listo = 0;
+ est_sig = 3'b010;
+ 
  end
  
  3'b010:
@@ -84,8 +83,9 @@ begin
  sel_c = 3'b010;
  sel_f = 2'b10;
  sel_a = 1;
- est_sig = 3'b011;
  Listo = 0;
+ est_sig = 3'b011;
+
  end
  
  3'b011:
@@ -93,8 +93,9 @@ begin
  sel_c = 3'b011;
  sel_f = 0;
  sel_a = 1;
- est_sig = 3'b100;
  Listo = 0;
+ est_sig = 3'b100;
+
  end
  
  3'b100:
@@ -102,8 +103,9 @@ begin
  sel_c = 3'b100;
  sel_f = 2'b01;
  sel_a = 1;
- est_sig = 3'b101;
  Listo = 0;
+ est_sig = 3'b101;
+ 
  end
  
  3'b101:
@@ -111,7 +113,11 @@ begin
  sel_c = 3'b101;
  sel_f = 2'b10;
  sel_a = 1;
- est_sig = 3'b000;
+ Listo = 0;
+ est_sig = 3'b110;
+ end
+ 3'b110:
+ begin
  Listo = 1;
  end
  default:

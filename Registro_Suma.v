@@ -23,22 +23,23 @@ module Registro_Suma #(parameter N = 25 /* Valor de N*/)(
 	input wire Enable,clk,
 	output wire [2*N-1:0] Signreg
     );
-	 
-reg [2*N-1:0] Registro;
+
+reg [2*N-1:0] Reg;
 
 initial
 begin
-Registro = 0;
+Reg = 0;
 end
-	 
+
 	always@(posedge clk)
 		begin
 			if(Enable)
-				Registro <= Registro;
+				Reg <= Reg;
 			else
-				Registro <= Suma;
+				Reg <= Suma;
 		end
 		
-assign Signreg = Registro;
+assign Signreg = Reg;
 
 endmodule
+

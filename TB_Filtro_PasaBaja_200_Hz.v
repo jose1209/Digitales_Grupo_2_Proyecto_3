@@ -32,23 +32,21 @@ module TB_Filtro_PasaBaja_200_Hz #(parameter N = 25);
  // Outputs
  wire [N-1:0] Yk;
  wire Bandera_Listo;
- wire [2*N-1:0] Prueba;
-
+ 
  // Instantiate the Unit Under Test (UUT)
  Filtro_Pasa_Baja_200_Hz uut (
  .Uk(Uk), 
  .Clk(Clk), 
  .Bandera_ADC(Bandera_ADC), 
  .Yk(Yk), 
- .Bandera_Listo(Bandera_Listo),
- .Prueba(Prueba),
- .Senal(Senal)
+ .Bandera_Listo(Bandera_Listo)
  );
  
+
 reg [N-1:0] Array_IN1 [199:0];
 integer j,Filtro;
 
-localparam T = 23;
+localparam T = 5;
  always
  begin
  Clk = 1'b1;
@@ -57,15 +55,7 @@ localparam T = 23;
  #(T/2) ;
  end
 
-localparam H = 22655;
- always
- begin
- Bandera_ADC = 1'b0;
- #(H/1.25) ;
- Bandera_ADC = 1'b1;
- #(H/5) ;
 
- end
 
 
  initial 
@@ -74,9 +64,14 @@ localparam H = 22655;
  Filtro= $fopen("ResFiltro200Bajas.txt","w"); //Crea el archivo de la rampa donde se guarda el resultado
  for(j=0; j<200; j=j+1) 
  begin
- Uk = Array_IN1[j]; 
- #22655;
+ Bandera_ADC = 1'b1;
+ Uk = Array_IN1[j];
+repeat(1) @(posedge Clk) 
+ @ (posedge Clk);
+ Bandera_ADC = 1'b0;
+ repeat(10) @(posedge Clk);
  $fwrite(Filtro,"%b \n",Yk); 
+
  end
  
  $fclose(Filtro); 

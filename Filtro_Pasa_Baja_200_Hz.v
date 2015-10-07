@@ -22,15 +22,14 @@ module Filtro_Pasa_Baja_200_Hz #(parameter N = 25 /* Valor de N*/)(
 	input wire [N-1:0] Uk,
 	input wire Clk,Bandera_ADC,
 	output wire [N-1:0] Yk,
-	output wire Bandera_Listo,Senal,
-	output wire [2*N-1:0] Prueba
+	output wire Bandera_Listo
     );
 
 wire [2:0] SelectorConst;
 wire [1:0] SelectorFk;
 wire [N-1:0] Const,InAcum,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2;
-wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2;
-wire Sig;
+wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2,Signregis;
+
 
 ControlMux instance_Control(
     .clk(Clk), 
@@ -38,8 +37,7 @@ ControlMux instance_Control(
     .sel_const(SelectorConst), 
     .sel_fun(SelectorFk), 		
     .sel_acum(sel_acum),   
-    .Band_Listo(Bandera_Listo),
-	 .Signal(Sig)
+    .Band_Listo(Bandera_Listo)
     );
 
 Mux_Constantes instance_MuxConstantes (
@@ -69,8 +67,15 @@ Aritmetica instance_Aritmetica (
     .Valores(ResultArim)			
     );
 	 
+Registro_Suma instance_Resgistros (
+    .Suma(ResultArim), 
+    .Enable(Bandera_Listo), 
+    .clk(Clk), 
+    .Signreg(Signregis)
+    );
+	 
 Shift_Reg instance_Shift_Reg (
-    .In(ResultArim), 
+    .In(Signregis), 
     .shift(~sel_acum), 
     .fk(Rfk), 				
     .fk_1(Rfk_1), 			
@@ -78,10 +83,9 @@ Shift_Reg instance_Shift_Reg (
     );
 
 Acumulador instance_Acumulador (
-    .In(ResultArim), 
+    .In(Signregis), 
     .clk(Clk), 
-    .Acumulado(Racum),	
-	 .Signal(Sig)
+    .Acumulado(Racum)
     );
 	 
 Truncamiento instance_TruncamientoFk (
@@ -105,6 +109,6 @@ Truncamiento instance_TruncamientoAcum (
     );
 
 assign Yk = Trunacum; 
-assign Prueba = ResultArim;
-assign Senal = Sig;
+
+
 endmodule
