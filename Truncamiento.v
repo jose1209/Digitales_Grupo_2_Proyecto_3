@@ -20,8 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Truncamiento #(parameter N = 25 /* Valor de N*/)(
 	input wire [2*N-1:0] Datos_Sum,
-	output reg [N-1:0] Datos_Trunc
+	output wire [N-1:0] Datos_Trunc,
+	input wire Ban_List
    );
+	
+reg [N-1:0] Trunk;
+
 	
 	parameter 			//Parte de magnitud salida
 	MA = 5,
@@ -40,29 +44,38 @@ module Truncamiento #(parameter N = 25 /* Valor de N*/)(
 
 	always@*
 	begin
-		if (Datos_Sum[2*N-2] == 1 && Datos_Sum[2*N-3:FB+FA+MB] == COM_A)
-		begin
-			Datos_Trunc[N-1] = Datos_Sum[2*N-2];
-			Datos_Trunc[N-2:FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
-			Datos_Trunc[FA-1:0] = Datos_Sum[(FA+FB)-1:FB];	
-		end
-		else if(Datos_Sum[2*N-2] == 0 && ~(Datos_Sum[2*N-3:FB+FA+MB] == COM_B))
+	Trunk = 0;
+		if(Ban_List)
+				Trunk = Trunk;
+		else
 			begin
-				Datos_Trunc[N-1:N-2] = Datos_Sum[2*N-2];
-				Datos_Trunc[N-2:0] = Sat_A;
+				if (Datos_Sum[2*N-2] == 1 && Datos_Sum[2*N-3:FB+FA+MB] == COM_A)
+				begin
+					Trunk[N-1] = Datos_Sum[2*N-2];
+					Trunk[N-2:FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
+					Trunk[FA-1:0] = Datos_Sum[(FA+FB)-1:FB];	
+				end
+				else if(Datos_Sum[2*N-2] == 0 && ~(Datos_Sum[2*N-3:FB+FA+MB] == COM_B))
+					begin
+						Trunk[N-1:N-2] = Datos_Sum[2*N-2];
+						Trunk[N-2:0] = Sat_A;
+					end
+				
+				else if(Datos_Sum[2*N-2] == 0 && Datos_Sum[2*N-3:FB+FA+MB] == COM_B)
+				begin
+					Trunk[N-1] = Datos_Sum[2*N-2];
+					Trunk[N-2:FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
+					Trunk[FA-1:0] = Datos_Sum[(FA+FB)-1:FB];
+				end
+				else 
+					begin
+						Trunk[N-1:N-2] = Datos_Sum[2*N-2];
+						Trunk[N-2:0] = Sat_B;
+					end
 			end
 		
-		else if(Datos_Sum[2*N-2] == 0 && Datos_Sum[2*N-3:FB+FA+MB] == COM_B)
-		begin
-			Datos_Trunc[N-1] = Datos_Sum[2*N-2];
-			Datos_Trunc[N-2:FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
-			Datos_Trunc[FA-1:0] = Datos_Sum[(FA+FB)-1:FB];
-		end
-		else 
-			begin
-				Datos_Trunc[N-1:N-2] = Datos_Sum[2*N-2];
-				Datos_Trunc[N-2:0] = Sat_B;
-			end
 	end
+
+assign Datos_Trunc = Trunk;
 	
 endmodule

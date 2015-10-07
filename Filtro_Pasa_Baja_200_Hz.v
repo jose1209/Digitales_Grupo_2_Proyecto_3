@@ -90,22 +90,26 @@ Acumulador instance_Acumulador (
 	 
 Truncamiento instance_TruncamientoFk (
     .Datos_Sum(Rfk), 
-    .Datos_Trunc(Trunfk)
+    .Datos_Trunc(Trunfk),
+	 .Ban_List(Bandera_Listo)
     );
 
 Truncamiento instance_TruncamientoFk_1 (
     .Datos_Sum(Rfk_1), 
-    .Datos_Trunc(Trunfk_1)
+    .Datos_Trunc(Trunfk_1),
+	 .Ban_List(Bandera_Listo)
     );
 
 Truncamiento instance_TruncamientoFk_2 (
     .Datos_Sum(Rfk_2), 
-    .Datos_Trunc(Trunfk_2)
+    .Datos_Trunc(Trunfk_2),
+	 .Ban_List(Bandera_Listo)
     );
 
 Truncamiento instance_TruncamientoAcum (
     .Datos_Sum(Racum), 
-    .Datos_Trunc(Trunacum)
+    .Datos_Trunc(Trunacum),
+	 .Ban_List(Bandera_Listo)
     );
 
 assign Yk = Trunacum; 

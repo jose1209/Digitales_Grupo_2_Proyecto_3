@@ -30,10 +30,7 @@ reg [2:0] sel_c,est_sig,est_act;
 reg [1:0] sel_f;
 reg sel_a,Listo;
 integer contador;
-initial
-begin
-Listo=0;
-end
+
 
 //Parte Secuencial 
 
@@ -55,7 +52,12 @@ end
 
 always@*
 begin
-if (contador <= 6)
+Listo = 0;
+sel_c = 0;
+sel_f = 0;
+est_sig = 0;
+sel_a = 0;
+if (contador <= 7)
 begin
  case(est_act)
  3'b000:
@@ -116,7 +118,13 @@ begin
  Listo = 0;
  est_sig = 3'b110;
  end
+ 
  3'b110:
+ begin
+ est_sig = 3'b111;
+ end
+ 
+ 3'b111:
  begin
  Listo = 1;
  end
