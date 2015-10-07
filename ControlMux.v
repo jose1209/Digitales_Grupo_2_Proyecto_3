@@ -52,12 +52,8 @@ end
 
 always@*
 begin
-Listo = 0;
-sel_c = 0;
-sel_f = 0;
-est_sig = 0;
-sel_a = 0;
-if (contador <= 7)
+
+if (contador <= 5)
 begin
  case(est_act)
  3'b000:
@@ -115,19 +111,10 @@ begin
  sel_c = 3'b101;
  sel_f = 2'b10;
  sel_a = 1;
- Listo = 0;
+ Listo = 1;
  est_sig = 3'b110;
  end
  
- 3'b110:
- begin
- est_sig = 3'b111;
- end
- 
- 3'b111:
- begin
- Listo = 1;
- end
  default:
  begin
  sel_c = 0;
@@ -138,7 +125,9 @@ begin
  end
  endcase 
  end
- else begin
+ 
+ else 
+ begin
  est_sig = 3'b000;
  end
 end

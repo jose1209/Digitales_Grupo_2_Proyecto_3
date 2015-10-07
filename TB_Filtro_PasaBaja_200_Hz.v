@@ -43,7 +43,7 @@ module TB_Filtro_PasaBaja_200_Hz #(parameter N = 25);
  );
  
 
-reg [N-1:0] Array_IN1 [199:0];
+reg [N-1:0] Array_IN1 [999:0];
 integer j,Filtro;
 
 localparam T = 5;
@@ -60,9 +60,9 @@ localparam T = 5;
 
  initial 
  begin 
- $readmemb("rampabin.txt", Array_IN1,0,199);
+ $readmemb("rampabin.txt", Array_IN1,0,999);
  Filtro= $fopen("ResFiltro200Bajas.txt","w"); //Crea el archivo de la rampa donde se guarda el resultado
- for(j=0; j<200; j=j+1) 
+ for(j=0; j<1000; j=j+1) 
  begin
  Bandera_ADC = 1'b1;
  Uk = Array_IN1[j];

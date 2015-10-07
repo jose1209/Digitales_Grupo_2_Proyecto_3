@@ -79,7 +79,8 @@ Shift_Reg instance_Shift_Reg (
     .shift(~sel_acum), 
     .fk(Rfk), 				
     .fk_1(Rfk_1), 			
-    .fk_2(Rfk_2)			
+    .fk_2(Rfk_2),
+	 .clk(Clk)
     );
 
 Acumulador instance_Acumulador (
@@ -91,25 +92,29 @@ Acumulador instance_Acumulador (
 Truncamiento instance_TruncamientoFk (
     .Datos_Sum(Rfk), 
     .Datos_Trunc(Trunfk),
-	 .Ban_List(Bandera_Listo)
+	 .Ban_List(Bandera_Listo),
+	 .clk(Clk)
     );
 
 Truncamiento instance_TruncamientoFk_1 (
     .Datos_Sum(Rfk_1), 
     .Datos_Trunc(Trunfk_1),
-	 .Ban_List(Bandera_Listo)
+	 .Ban_List(Bandera_Listo),
+	 .clk(Clk)
     );
 
 Truncamiento instance_TruncamientoFk_2 (
     .Datos_Sum(Rfk_2), 
     .Datos_Trunc(Trunfk_2),
-	 .Ban_List(Bandera_Listo)
+	 .Ban_List(Bandera_Listo),
+	 .clk(Clk)
     );
 
 Truncamiento instance_TruncamientoAcum (
     .Datos_Sum(Racum), 
     .Datos_Trunc(Trunacum),
-	 .Ban_List(Bandera_Listo)
+	 .Ban_List(Bandera_Listo),
+	 .clk(Clk)
     );
 
 assign Yk = Trunacum; 

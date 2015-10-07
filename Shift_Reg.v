@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Shift_Reg #(parameter N = 25)(
 	input wire[2*N-1:0] In,
-	input wire shift,
+	input wire shift,clk,
 	output wire[2*N-1:0] fk,fk_1,fk_2
     );	 
 
@@ -33,11 +33,20 @@ fk_old1 = 0;
 fk_old2 = 0;
 end
 
-always@(posedge shift)
+always@(posedge clk)
+begin
+if(shift)
 begin
 fk_ac <= In;
-fk_old1 <= fk;	
-fk_old2 <= fk_1;
+fk_old1 <= fk_ac;	
+fk_old2 <= fk_old1;
+end
+else
+begin
+fk_ac <= In;
+fk_old1 <= fk_old1;
+fk_old2 <= fk_old2;
+end
 end
 
 assign fk = fk_ac;

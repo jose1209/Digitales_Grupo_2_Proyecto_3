@@ -21,10 +21,15 @@
 module Truncamiento #(parameter N = 25 /* Valor de N*/)(
 	input wire [2*N-1:0] Datos_Sum,
 	output wire [N-1:0] Datos_Trunc,
-	input wire Ban_List
+	input wire Ban_List,clk
    );
 	
 reg [N-1:0] Trunk;
+
+initial
+begin
+Trunk = 0;
+end
 
 	
 	parameter 			//Parte de magnitud salida
@@ -44,7 +49,6 @@ reg [N-1:0] Trunk;
 
 	always@*
 	begin
-	Trunk = 0;
 		if(Ban_List)
 				Trunk = Trunk;
 		else
