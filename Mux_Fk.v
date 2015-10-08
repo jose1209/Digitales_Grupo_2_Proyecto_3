@@ -27,10 +27,10 @@ module Mux_Fk(
    always @(select,fk,fk_1,fk_2)
 		begin
 				case (select)
-					2'b00: Y = fk;
-					2'b01: Y = fk_1;
-					2'b10: Y = fk_2;
-					2'b11: Y = 0;
+					2'b00: Y = 0;
+					2'b01: Y = fk;
+					2'b10: Y = fk_1;
+					2'b11: Y = fk_2;
 					default: Y = 0;
 				endcase
 		end

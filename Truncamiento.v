@@ -21,6 +21,7 @@
 module Truncamiento #(parameter N = 25 /* Valor de N*/)(
 	input wire [2*N-1:0] Datos_Sum,
 	output wire [N-1:0] Datos_Trunc,
+	output wire [N-1:0] NADA,
 	input wire Ban_List
    );
 	
@@ -49,10 +50,10 @@ end
 	always@*
 	begin
 	
-		if(Ban_List)
+		/*if(Ban_List)
 				Trunk = Trunk;
 		else
-			begin
+			begin*/
 				if (Datos_Sum[2*N-2] == 1 && Datos_Sum[2*N-3:FB+FA+MB] == COM_A)
 				begin
 					Trunk[N-1] = Datos_Sum[2*N-2];
@@ -76,10 +77,13 @@ end
 						Trunk[N-1] = 1'b0;
 						Trunk[N-2:0] = Sat_B;
 					end
-			end
+			//end
 		
 	end
 
 assign Datos_Trunc = Trunk;
-	
+assign NADA[N-1] = Datos_Sum[2*N-1];
+assign NADA[FB-1:0] = Datos_Sum[FB-1:0];	
+assign NADA[N-2:FB] = Datos_Sum[2*N-3:FA+FB+MB];
+
 endmodule

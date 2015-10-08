@@ -21,13 +21,13 @@
 module Filtro_Pasa_Baja_200_Hz #(parameter N = 25 /* Valor de N*/)(
 	input wire [N-1:0] Uk,
 	input wire Clk,Bandera_ADC,
-	output wire [N-1:0] Yk,
+	output wire [N-1:0] Yk,NO_CONET0,NO_CONET1,NO_CONET2,NO_CONET3,
 	output wire Bandera_Listo
     );
 
 wire [2:0] SelectorConst;
 wire [1:0] SelectorFk,sel_acum;
-wire [N-1:0] Const,InAcum,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2,reg_cst,reg_Acum,reg_Fk;
+wire [N-1:0] Const,InAcum,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2,NADA0,NADA1,NADA2,NADA3;
 wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2,Signregis;
 
 
@@ -89,35 +89,48 @@ Acumulador instance_Acumulador (
     .In(ResultArim), 
     .clk(Clk), 
     .Acumulado(Racum),
-	 .Enable(Senal),
 	 .Bandera(Bandera_ADC)
     );
 	 
 Truncamiento instance_TruncamientoFk (
     .Datos_Sum(Rfk), 
     .Datos_Trunc(Trunfk),
-	 .Ban_List(Bandera_Listo)
+	 .Ban_List(Bandera_Listo),
+	 .NADA(NADA3)
     );
 
 Truncamiento instance_TruncamientoFk_1 (
     .Datos_Sum(Rfk_1), 
     .Datos_Trunc(Trunfk_1),
-	 .Ban_List(Bandera_Listo)
+	 .Ban_List(Bandera_Listo),
+	 .NADA(NADA2)
     );
 
 Truncamiento instance_TruncamientoFk_2 (
     .Datos_Sum(Rfk_2), 
     .Datos_Trunc(Trunfk_2),
-	 .Ban_List(Bandera_Listo)
+	 .Ban_List(Bandera_Listo),
+	 .NADA(NADA1)
     );
 
 Truncamiento instance_TruncamientoAcum (
     .Datos_Sum(Racum), 
     .Datos_Trunc(Trunacum),
-	 .Ban_List(Bandera_Listo)
+	 .Ban_List(Bandera_Listo),
+	 .NADA(NADA0)
+    );
+	 
+Registro_Yk instance_Yk (
+    .In(Trunacum), 
+    .Finish(Bandera_Listo), 
+    .clk(Clk), 
+    .Yk(Yk)
     );
 
-assign Yk = Trunacum; 
 
+assign NO_CONET0 = NADA0;
+assign NO_CONET1 = NADA1;
+assign NO_CONET2 = NADA2;
+assign NO_CONET3 = NADA3;
 
 endmodule

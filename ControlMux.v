@@ -40,12 +40,12 @@ begin
  if(Bandera)
  begin
  est_act <= 4'b0000;
- contador<=0;
+ contador <= 0;
  end
  else 
  begin
  est_act <= est_sig; 
- contador<=contador+1;
+ contador <= contador+1;
  end
 end
 
@@ -54,96 +54,71 @@ end
 always@*
 begin
 senal = 0;
-if (contador <= 9)
+if (contador <= 5)
 begin
  case(est_act)
  
-  4'b0000:
- begin
- Listo = 0;
- senal = 0;
- est_sig = 4'b0001;
- end
- 
- 4'b0001:
- begin
- sel_c = 0;
- sel_f = 2'b11;
- sel_a = 0;
- Listo = 0;
- senal = 0;
- est_sig = 4'b0010;
- end
- 
- 4'b0010:
- begin 
- sel_c = 3'b001;
- sel_f = 2'b01;
- sel_a = 2'b01;
- Listo = 0;
- senal = 0;
- est_sig = 4'b0011;
- end
- 
- 4'b0011:
- begin
- sel_c = 3'b010;
- sel_f = 2'b10;
- sel_a = 2'b01;
- Listo = 0;
- senal = 0;
- est_sig = 4'b0100;
- end
- 
-4'b0100:
- begin
- Listo = 0;
- senal = 1;
- est_sig = 4'b0101;
- end
- 
- 4'b0101:
- begin
- Listo = 0;
- senal = 0;
- est_sig = 4'b0110;
- end
- 
- 4'b0110:
- begin
- sel_c = 3'b011;
- sel_f = 0;
- sel_a = 2'b01;
- Listo = 0;
- senal = 0;
- est_sig = 4'b0111;
- end
- 
- 4'b0111:
- begin
- sel_c = 3'b100;
- sel_f = 2'b01;
- sel_a = 2'b01;
- Listo = 0;
- senal = 0;
- est_sig = 4'b1000;
- end
- 
- 4'b1000:
- begin
- sel_c = 3'b101;
- sel_f = 2'b10;
- sel_a = 2'b01;
- Listo = 0;
- senal = 0;
- est_sig = 4'b1001;
- end
- 
- 4'b1001:
- begin
- Listo = 1;
- end
- 
+	4'b0000:
+		begin
+			sel_c = 3'b000;
+			sel_a = 2'b00;
+			sel_f = 2'b00;
+			senal = 0;
+			Listo = 0;
+			est_sig = 4'b0001;
+		end
+	
+	4'b0001:
+		begin
+			sel_c = 3'b000;
+			sel_a = 2'b01;
+			sel_f = 2'b10;
+			senal = 0;
+			Listo = 0;
+			est_sig = 4'b0010;
+		end
+	
+	4'b0010:
+		begin
+			sel_c = 3'b001;
+			sel_a = 2'b01;
+			sel_f = 2'b11;
+			senal = 1;
+			Listo = 0;
+			est_sig = 4'b0011;
+		end
+	
+	4'b0011:						//fk
+		begin
+			sel_c = 3'b010;
+			sel_a = 2'b10;
+			sel_f = 2'b01;
+			senal = 0;
+			Listo = 0;
+			est_sig = 4'b0100;
+		end
+		
+	4'b0100:
+		begin
+			sel_c = 3'b011;
+			sel_a = 2'b01;
+			sel_f = 2'b10;
+			senal = 0;
+			Listo = 0;
+			est_sig = 4'b0101;
+		end
+		
+	4'b0101:						//fk_2
+		begin
+			sel_c = 3'b100;
+			sel_a = 2'b01;
+			sel_f = 2'b11;
+			senal = 0;
+			Listo = 1;
+		end
+	
+		
+
  default:
  begin
  sel_c = 0;
@@ -158,7 +133,7 @@ begin
  
  else 
  begin
- est_sig = 3'b000;
+ est_sig = 4'b0000;
  end
  end
 

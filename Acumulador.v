@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Acumulador #(parameter N = 25 /* Valor de N*/)(
 	input wire [2*N-1:0] In,
-	input wire clk,Enable,Bandera,
+	input wire clk,Bandera,
 	output wire [2*N-1:0] Acumulado
 
     );
@@ -35,7 +35,7 @@ end
 
 always@(posedge clk)
 	begin 
-		if(Enable || Bandera)
+		if(Bandera)
 			begin
 				Acum <= 0;
 			end
