@@ -30,6 +30,7 @@ module Mux_Fk(
 					2'b00: Y = fk;
 					2'b01: Y = fk_1;
 					2'b10: Y = fk_2;
+					2'b11: Y = 0;
 					default: Y = 0;
 				endcase
 		end

@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    00:09:22 10/01/2015 
+// Create Date:    19:58:17 10/07/2015 
 // Design Name: 
-// Module Name:    Acumulador 
+// Module Name:    Registro_Yk 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,34 +18,23 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Acumulador #(parameter N = 25 /* Valor de N*/)(
-	input wire [2*N-1:0] In,
-	input wire clk,Enable,Bandera,
-	output wire [2*N-1:0] Acumulado
-
+module Registro_Yk #(parameter N = 25 /* Valor de N*/)(
+	input wire [N-1:0] In,
+	input wire Finish,clk,
+	output reg [N-1:0] Yk
     );
-
-reg [2*N-1:0] Acum;
 
 initial
 begin
-Acum = 0;
+Yk = 0;
 end
 
-
-always@(posedge clk)
-	begin 
-		if(Enable || Bandera)
-			begin
-				Acum <= 0;
-			end
-		else
-			begin
-				Acum <= In;
-			end
-	end
-
-assign Acumulado = Acum;
-
+	always@(posedge clk)
+		begin
+			if(Finish)
+				Yk <= In;
+			else
+				Yk  <= Yk;
+		end
 
 endmodule

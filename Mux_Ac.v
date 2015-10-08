@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Mux_Ac(
-	input wire select,
+	input wire [1:0] select,
 	input wire[24:0] Uk,Acum,
 	output reg[24:0] Y
     );
@@ -27,8 +27,9 @@ module Mux_Ac(
    always @(select,Uk,Acum)
 		begin
 				case (select)
-					1'b0: Y = Uk;
-					1'b1: Y = Acum;
+					2'b00: Y = Uk;
+					2'b01: Y = Acum;
+					2'b10: Y = 0;
 					default: Y = 0;
 				endcase
 		end

@@ -26,9 +26,9 @@ module Filtro_Pasa_Baja_200_Hz #(parameter N = 25 /* Valor de N*/)(
     );
 
 wire [2:0] SelectorConst;
-wire [1:0] SelectorFk;
+wire [1:0] SelectorFk,sel_acum;
 wire [N-1:0] Const,InAcum,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2,reg_cst,reg_Acum,reg_Fk;
-wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2;
+wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2,Signregis;
 
 
 ControlMux instance_Control(
@@ -37,7 +37,8 @@ ControlMux instance_Control(
     .sel_const(SelectorConst), 
     .sel_fun(SelectorFk), 		
     .sel_acum(sel_acum),   
-    .Band_Listo(Bandera_Listo)
+    .Band_Listo(Bandera_Listo),
+	 .Senal(Senal)
     );
 
 Mux_Constantes instance_MuxConstantes (
@@ -49,8 +50,9 @@ Mux_Ac instance_Mux_Acum (
     .select(sel_acum), 
     .Uk(Uk), 
     .Acum(Trunacum), 
-    .Y(InAcum )			
+    .Y(InAcum)			
     );
+	
 
 Mux_Fk instance_Mux_Fk (
     .select(SelectorFk), 
@@ -66,11 +68,17 @@ Aritmetica instance_Aritmetica (
     .Entrada_G(InAcum), 
     .Valores(ResultArim)			
     );
-	 
+/*	 
+Registro_Suma instance_Resgistros (
+    .Suma(ResultArim), 
+    .Enable(Bandera_Listo), 
+    .clk(Clk), 
+    .Signreg(Signregis)
+    );*/
 	 
 Shift_Reg instance_Shift_Reg (
     .In(ResultArim), 
-    .shift(~sel_acum), 
+    .shift(Senal), 
     .fk(Rfk), 				
     .fk_1(Rfk_1), 			
     .fk_2(Rfk_2),
@@ -80,7 +88,9 @@ Shift_Reg instance_Shift_Reg (
 Acumulador instance_Acumulador (
     .In(ResultArim), 
     .clk(Clk), 
-    .Acumulado(Racum)
+    .Acumulado(Racum),
+	 .Enable(Senal),
+	 .Bandera(Bandera_ADC)
     );
 	 
 Truncamiento instance_TruncamientoFk (

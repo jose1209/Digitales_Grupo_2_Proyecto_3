@@ -21,14 +21,15 @@
 module ControlMux(
 	input wire Bandera,clk,
 	output wire [2:0] sel_const,
-	output wire [1:0] sel_fun,
-	output wire sel_acum,Band_Listo
+	output wire [1:0] sel_fun,sel_acum,
+	output wire Band_Listo,Senal
     );
 	 
 //Varaibles
-reg [2:0] sel_c,est_sig,est_act;
-reg [1:0] sel_f;
-reg sel_a,Listo;
+reg [2:0] sel_c;
+reg [3:0] est_sig,est_act;
+reg [1:0] sel_f,sel_a;
+reg Listo,senal;
 integer contador;
 
 
@@ -38,93 +39,107 @@ always@(posedge clk)
 begin
  if(Bandera)
  begin
- est_act <= 3'b000;
- contador=0;
+ est_act <= 4'b0000;
+ contador<=0;
  end
  else 
  begin
  est_act <= est_sig; 
- contador=contador+1;
+ contador<=contador+1;
  end
 end
-
 
 //Parte combinacional 
 
 always@*
 begin
-sel_a = 0;
-sel_f = 0;
-sel_c = 0;
-est_sig = 0;
-if (contador <= 7)
+senal = 0;
+if (contador <= 9)
 begin
  case(est_act)
- 3'b000:
+ 
+  4'b0000:
  begin
- sel_c = 0;
- sel_f = 0;
- sel_a = 0;
  Listo = 0;
- est_sig = 3'b001;
+ senal = 0;
+ est_sig = 4'b0001;
  end
  
- 3'b001:
+ 4'b0001:
+ begin
+ sel_c = 0;
+ sel_f = 2'b11;
+ sel_a = 0;
+ Listo = 0;
+ senal = 0;
+ est_sig = 4'b0010;
+ end
+ 
+ 4'b0010:
  begin 
  sel_c = 3'b001;
  sel_f = 2'b01;
- sel_a = 1;
+ sel_a = 2'b01;
  Listo = 0;
- est_sig = 3'b010;
- 
+ senal = 0;
+ est_sig = 4'b0011;
  end
  
- 3'b010:
+ 4'b0011:
  begin
  sel_c = 3'b010;
  sel_f = 2'b10;
- sel_a = 1;
+ sel_a = 2'b01;
  Listo = 0;
- est_sig = 3'b011;
-
+ senal = 0;
+ est_sig = 4'b0100;
  end
  
- 3'b011:
+4'b0100:
+ begin
+ Listo = 0;
+ senal = 1;
+ est_sig = 4'b0101;
+ end
+ 
+ 4'b0101:
+ begin
+ Listo = 0;
+ senal = 0;
+ est_sig = 4'b0110;
+ end
+ 
+ 4'b0110:
  begin
  sel_c = 3'b011;
  sel_f = 0;
- sel_a = 1;
+ sel_a = 2'b01;
  Listo = 0;
- est_sig = 3'b100;
-
+ senal = 0;
+ est_sig = 4'b0111;
  end
  
- 3'b100:
+ 4'b0111:
  begin
  sel_c = 3'b100;
  sel_f = 2'b01;
- sel_a = 1;
+ sel_a = 2'b01;
  Listo = 0;
- est_sig = 3'b101;
- 
+ senal = 0;
+ est_sig = 4'b1000;
  end
  
- 3'b101:
+ 4'b1000:
  begin
  sel_c = 3'b101;
  sel_f = 2'b10;
- sel_a = 1;
+ sel_a = 2'b01;
  Listo = 0;
- est_sig = 3'b110;
+ senal = 0;
+ est_sig = 4'b1001;
  end
  
- 3'b110:
- begin
-Listo = 0;
-est_sig = 3'b111;
- end
- 
- 3'b111:
+ 4'b1001:
  begin
  Listo = 1;
  end
@@ -134,8 +149,9 @@ est_sig = 3'b111;
  sel_c = 0;
  sel_f = 0;
  sel_a = 0;
- est_sig = 3'b000;
  Listo = 0;
+ senal = 0;
+ est_sig = 4'b0000;
  end
  endcase 
  end
@@ -144,7 +160,7 @@ est_sig = 3'b111;
  begin
  est_sig = 3'b000;
  end
-end
+ end
 
 
 
@@ -152,5 +168,6 @@ assign sel_const = sel_c;
 assign sel_fun = sel_f;
 assign sel_acum = sel_a;
 assign Band_Listo = Listo;
+assign Senal = senal;
 endmodule
 	 
