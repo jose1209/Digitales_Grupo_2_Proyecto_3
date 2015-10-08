@@ -47,7 +47,7 @@ reg [N-1:0] Array_IN1 [999:0];
 integer j,Filtro;
 
 
-localparam T = 4;
+localparam T = 24;
  always
  begin
  Clk = 1'b1;

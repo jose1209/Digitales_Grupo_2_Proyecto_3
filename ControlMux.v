@@ -48,11 +48,15 @@ begin
  end
 end
 
+
 //Parte combinacional 
 
 always@*
 begin
-
+sel_a = 0;
+sel_f = 0;
+sel_c = 0;
+est_sig = 0;
 if (contador <= 7)
 begin
  case(est_act)
@@ -63,7 +67,6 @@ begin
  sel_a = 0;
  Listo = 0;
  est_sig = 3'b001;
- 
  end
  
  3'b001:
