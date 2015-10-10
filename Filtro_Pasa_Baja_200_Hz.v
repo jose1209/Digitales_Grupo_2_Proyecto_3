@@ -27,8 +27,8 @@ module Filtro_Pasa_Baja_200_Hz #(parameter N = 25 /* Valor de N*/)(
 
 wire [2:0] SelectorConst;
 wire [1:0] SelectorFk,sel_acum;
-wire [N-1:0] Const,InAcum,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2,NADA0,NADA1,NADA2,NADA3;
-wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2,Signregis;
+wire [N-1:0] Const,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2,NADA0,NADA1,NADA2,NADA3;
+wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2,Signregis,Ext_Con,Yk_trunk,InAcum;
 
 
 ControlMux instance_Control(
@@ -41,6 +41,11 @@ ControlMux instance_Control(
 	 .Senal(Senal)
     );
 
+Concatenador instance_Concatenador (
+    .ValorSuma(Uk), 
+    .Suma_ext(Ext_Con)
+    );
+
 Mux_Constantes instance_MuxConstantes (
     .selector(SelectorConst), 
     .Constantes(Const)		
@@ -48,8 +53,8 @@ Mux_Constantes instance_MuxConstantes (
 
 Mux_Ac instance_Mux_Acum (
     .select(sel_acum), 
-    .Uk(Uk), 
-    .Acum(Trunacum), 
+    .Uk(Ext_Con), 
+    .Acum(Racum), 
     .Y(InAcum)			
     );
 	
@@ -62,20 +67,14 @@ Mux_Fk instance_Mux_Fk (
     .Y(InMul )					
     );
 
-Aritmetica instance_Aritmetica (
-    .Constantes_G(Const), 
-    .Multip_G(InMul), 
-    .Entrada_G(InAcum), 
-    .Valores(ResultArim)			
+Sumador instance_Aritmetica (
+    .Sum_ext(InAcum), 
+    .Multiplicandos(InMul), 
+    .Constantes(Const), 
+    .Suma_G(ResultArim)
     );
-/*	 
-Registro_Suma instance_Resgistros (
-    .Suma(ResultArim), 
-    .Enable(Bandera_Listo), 
-    .clk(Clk), 
-    .Signreg(Signregis)
-    );*/
-	 
+
+
 Shift_Reg instance_Shift_Reg (
     .In(ResultArim), 
     .shift(Senal), 
@@ -114,17 +113,17 @@ Truncamiento instance_TruncamientoFk_2 (
     );
 
 Truncamiento instance_TruncamientoAcum (
-    .Datos_Sum(Racum), 
+    .Datos_Sum(Yk_trunk), 
     .Datos_Trunc(Trunacum),
 	 .Ban_List(Bandera_Listo),
 	 .NADA(NADA0)
     );
 	 
 Registro_Yk instance_Yk (
-    .In(Trunacum), 
+    .In(Racum), 
     .Finish(Bandera_Listo), 
     .clk(Clk), 
-    .Yk(Yk)
+    .Yk(Yk_trunk)
     );
 
 
@@ -132,5 +131,6 @@ assign NO_CONET0 = NADA0;
 assign NO_CONET1 = NADA1;
 assign NO_CONET2 = NADA2;
 assign NO_CONET3 = NADA3;
+assign Yk = Trunacum;
 
 endmodule

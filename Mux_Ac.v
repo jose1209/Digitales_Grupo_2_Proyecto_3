@@ -18,10 +18,10 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Mux_Ac(
+module Mux_Ac #(parameter N = 25 /* Valor de N*/)(
 	input wire [1:0] select,
-	input wire[24:0] Uk,Acum,
-	output reg[24:0] Y
+	input wire[2*N-1:0] Uk,Acum,
+	output reg[2*N-1:0] Y
     );
 	 
    always @(select,Uk,Acum)

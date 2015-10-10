@@ -61,7 +61,7 @@ localparam T = 20;
 
  initial 
  begin 
- $readmemb("rampa.txt", Array_IN1,0,999);
+ $readmemb("DatosRampa.txt", Array_IN1,0,999);
  Filtro= $fopen("ResFiltro200Bajas.txt","w"); //Crea el archivo de la rampa donde se guarda el resultado
  for(j=0; j<1000; j=j+1) 
  begin

@@ -50,10 +50,6 @@ end
 	always@*
 	begin
 	
-		/*if(Ban_List)
-				Trunk = Trunk;
-		else
-			begin*/
 				if (Datos_Sum[2*N-2] == 1 && Datos_Sum[2*N-3:FB+FA+MB] == COM_A)
 				begin
 					Trunk[N-1] = Datos_Sum[2*N-2];
@@ -62,8 +58,8 @@ end
 				end
 				else if(Datos_Sum[2*N-2] == 0 && ~(Datos_Sum[2*N-3:FB+FA+MB] == COM_B))
 					begin
-						Trunk[N-1] = 1'b1;
-						Trunk[N-2:0] = Sat_A;
+						Trunk[N-1] = 1'b0;
+						Trunk[N-2:0] = Sat_B;
 					end
 				
 				else if(Datos_Sum[2*N-2] == 0 && Datos_Sum[2*N-3:FB+FA+MB] == COM_B)
@@ -74,10 +70,10 @@ end
 				end
 				else 
 					begin
-						Trunk[N-1] = 1'b0;
-						Trunk[N-2:0] = Sat_B;
+						Trunk[N-1] = 1'b1;
+						Trunk[N-2:0] = Sat_A;
 					end
-			//end
+		
 		
 	end
 

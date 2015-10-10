@@ -54,6 +54,7 @@ end
 always@*
 begin
 senal = 0;
+Listo = 0;
 if (contador <= 5)
 begin
  case(est_act)
