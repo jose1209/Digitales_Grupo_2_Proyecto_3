@@ -21,8 +21,8 @@
 module Truncamiento #(parameter N = 25 /* Valor de N*/)(
 	input wire [2*N-1:0] Datos_Sum,
 	output wire [N-1:0] Datos_Trunc,
-	output wire [N-1:0] NADA,
-	input wire Ban_List
+	output wire [N-1:0] NADA
+	//input wire Ban_List
    );
 	
 reg [N-1:0] Trunk;
@@ -73,7 +73,6 @@ end
 						Trunk[N-1] = 1'b1;
 						Trunk[N-2:0] = Sat_A;
 					end
-		
 		
 	end
 

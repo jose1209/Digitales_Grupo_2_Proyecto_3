@@ -27,8 +27,8 @@ module Filtro_Pasa_Baja_200_Hz #(parameter N = 25 /* Valor de N*/)(
 
 wire [2:0] SelectorConst;
 wire [1:0] SelectorFk,sel_acum;
-wire [N-1:0] Const,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2,NADA0,NADA1,NADA2,NADA3;
-wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2,Signregis,Ext_Con,Yk_trunk,InAcum;
+wire [N-1:0] Const,InMul,Trunacum,Trunfk,Trunfk_1,Trunfk_2,NADA0,NADA1,NADA2,NADA3,InAcum;
+wire [2*N-1:0] ResultArim,Racum,Rfk,Rfk_1,Rfk_2,Signregis,Ext_Con,Yk_trunk;
 
 
 ControlMux instance_Control(
@@ -41,23 +41,11 @@ ControlMux instance_Control(
 	 .Senal(Senal)
     );
 
-Concatenador instance_Concatenador (
-    .ValorSuma(Uk), 
-    .Suma_ext(Ext_Con)
-    );
-
 Mux_Constantes instance_MuxConstantes (
     .selector(SelectorConst), 
     .Constantes(Const)		
     );
 
-Mux_Ac instance_Mux_Acum (
-    .select(sel_acum), 
-    .Uk(Ext_Con), 
-    .Acum(Racum), 
-    .Y(InAcum)			
-    );
-	
 
 Mux_Fk instance_Mux_Fk (
     .select(SelectorFk), 
@@ -67,14 +55,40 @@ Mux_Fk instance_Mux_Fk (
     .Y(InMul )					
     );
 
+
+Mux_Ac instance_Mux_Acum (
+    .select(sel_acum), 
+    .Uk(Uk), 
+    .Acum(Trunacum), 
+    .Y(InAcum)			
+    );
+
+Concatenador instance_Concatenador (
+    .ValorSuma(InAcum), 
+    .Suma_ext(Ext_Con)
+    );
+
 Sumador instance_Aritmetica (
-    .Sum_ext(InAcum), 
+    .Sum_ext(Ext_Con), 
     .Multiplicandos(InMul), 
     .Constantes(Const), 
     .Suma_G(ResultArim)
     );
-
-
+	 
+Truncamiento instance_TruncamientoAcum (
+    .Datos_Sum(Racum), 
+    .Datos_Trunc(Trunacum),
+	 //.Ban_List(Bandera_Listo),
+	 .NADA(NADA0)
+    );
+	 
+Acumulador instance_Acumulador (
+    .In(ResultArim), 
+    .clk(Clk), 
+    .Acumulado(Racum),
+	 .Bandera(Bandera_ADC)
+    );
+	 
 Shift_Reg instance_Shift_Reg (
     .In(ResultArim), 
     .shift(Senal), 
@@ -84,46 +98,34 @@ Shift_Reg instance_Shift_Reg (
 	 .clk(Clk)
     );
 
-Acumulador instance_Acumulador (
-    .In(ResultArim), 
-    .clk(Clk), 
-    .Acumulado(Racum),
-	 .Bandera(Bandera_ADC)
-    );
+
 	 
 Truncamiento instance_TruncamientoFk (
     .Datos_Sum(Rfk), 
     .Datos_Trunc(Trunfk),
-	 .Ban_List(Bandera_Listo),
+	// .Ban_List(Bandera_Listo),
 	 .NADA(NADA3)
     );
 
 Truncamiento instance_TruncamientoFk_1 (
     .Datos_Sum(Rfk_1), 
     .Datos_Trunc(Trunfk_1),
-	 .Ban_List(Bandera_Listo),
+	// .Ban_List(Bandera_Listo),
 	 .NADA(NADA2)
     );
 
 Truncamiento instance_TruncamientoFk_2 (
     .Datos_Sum(Rfk_2), 
     .Datos_Trunc(Trunfk_2),
-	 .Ban_List(Bandera_Listo),
+	 //.Ban_List(Bandera_Listo),
 	 .NADA(NADA1)
-    );
-
-Truncamiento instance_TruncamientoAcum (
-    .Datos_Sum(Yk_trunk), 
-    .Datos_Trunc(Trunacum),
-	 .Ban_List(Bandera_Listo),
-	 .NADA(NADA0)
     );
 	 
 Registro_Yk instance_Yk (
-    .In(Racum), 
+    .In(Trunacum), 
     .Finish(Bandera_Listo), 
     .clk(Clk), 
-    .Yk(Yk_trunk)
+    .Yk(Yk/*Yk_trunk*/)
     );
 
 
@@ -131,6 +133,6 @@ assign NO_CONET0 = NADA0;
 assign NO_CONET1 = NADA1;
 assign NO_CONET2 = NADA2;
 assign NO_CONET3 = NADA3;
-assign Yk = Trunacum;
+//assign Yk = Trunacum;
 
 endmodule
