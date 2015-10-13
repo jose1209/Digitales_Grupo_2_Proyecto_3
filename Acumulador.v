@@ -19,9 +19,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Acumulador #(parameter N = 25 /* Valor de N*/)(
-	input wire [2*N-1:0] In,
+	input wire signed [2*N-1:0] In,
 	input wire clk,Bandera,
-	output wire [2*N-1:0] Acumulado
+	output reg signed [2*N-1:0] Acumulado
 
     );
 
@@ -29,23 +29,18 @@ reg [2*N-1:0] Acum;
 
 initial
 begin
-Acum = 0;
+Acumulado = 0;
 end
 
+	always@(negedge clk)
+		begin
+			if(Bandera)
+				Acumulado  <= Acumulado;
+			else
+				Acumulado <= In;
+		end
 
-always@(posedge clk)
-	begin 
-		if(Bandera)
-			begin
-				Acum <= 0;
-			end
-		else
-			begin
-				Acum <= In;
-			end
-	end
 
-assign Acumulado = Acum;
 
 
 endmodule

@@ -47,7 +47,7 @@ reg [N-1:0] Array_IN1 [999:0];
 integer j,Filtro;
 
 
-localparam T = 20;
+localparam T = 231;
  always
  begin
  Clk = 1'b1;
@@ -67,8 +67,7 @@ localparam T = 20;
  begin
  Bandera_ADC = 1'b1;
  Uk = Array_IN1[j];
-repeat(1) @(posedge Clk) 
- @ (posedge Clk);
+repeat(1) @(posedge Clk); 
  Bandera_ADC = 1'b0;
  repeat(10) @(posedge Clk);
  $fwrite(Filtro,"%b \n",Yk); 

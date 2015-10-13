@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Mux_Constantes(
 	input wire[2:0] selector,
-	output reg[24:0] Constantes
+	output reg signed[24:0] Constantes
     );
 
 always@*
@@ -37,6 +37,8 @@ always@*
 					Constantes = 25'sb0000000000000000000000111; //0.0003979	b1
 				3'b100:
 					Constantes = 25'sb0000000000000000000000011; //0.000199	b2
+				3'b101:
+					Constantes = 25'sb0000000000100000000000000; // 1
 				default:
 					Constantes = 0;
 				endcase

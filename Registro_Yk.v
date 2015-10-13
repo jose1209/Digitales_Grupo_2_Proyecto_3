@@ -19,9 +19,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Registro_Yk #(parameter N = 25 /* Valor de N*/)(
-	input wire [N-1:0] In,
+	input wire signed [N-1:0] In,
 	input wire Finish,clk,
-	output reg [N-1:0] Yk
+	output reg signed [N-1:0] Yk
     );
 
 initial

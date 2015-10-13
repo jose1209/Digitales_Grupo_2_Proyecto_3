@@ -18,13 +18,13 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Truncamiento #(parameter N = 25 /* Valor de N*/)(
-	input wire [2*N-1:0] Datos_Sum,
-	output wire [N-1:0] Datos_Trunc,
-	output wire [N-1:0] NADA
+module Truncamiento #(parameter N = 25, parameter F = 14 /* Valor de N*/)(
+	/*input wire signed [2*N-1:0] entrada,
+	output wire signed [N-1:0] resultado
+	//output wire [N-1:0] NADA
 	//input wire Ban_List
    );
-	
+
 reg [N-1:0] Trunk;
 
 initial
@@ -50,23 +50,23 @@ end
 	always@*
 	begin
 	
-				if (Datos_Sum[2*N-2] == 1 && Datos_Sum[2*N-3:FB+FA+MB] == COM_A)
+				if (entrada[2*N-2] == 1 && entrada[2*N-3:FB+FA+MB] == COM_A)
 				begin
-					Trunk[N-1] = Datos_Sum[2*N-2];
-					Trunk[N-2:FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
-					Trunk[FA-1:0] = Datos_Sum[(FA+FB)-1:FB];	
+					Trunk[N-1] = entrada[2*N-2];
+					Trunk[N-2:FA] = entrada[(FA+FB+MB)-1:FA+FB];
+					Trunk[FA-1:0] = entrada[(FA+FB)-1:FB];	
 				end
-				else if(Datos_Sum[2*N-2] == 0 && ~(Datos_Sum[2*N-3:FB+FA+MB] == COM_B))
+				else if(entrada[2*N-2] == 0 && ~(entrada[2*N-3:FB+FA+MB] == COM_B))
 					begin
 						Trunk[N-1] = 1'b0;
 						Trunk[N-2:0] = Sat_B;
 					end
 				
-				else if(Datos_Sum[2*N-2] == 0 && Datos_Sum[2*N-3:FB+FA+MB] == COM_B)
+				else if(entrada[2*N-2] == 0 && entrada[2*N-3:FB+FA+MB] == COM_B)
 				begin
-					Trunk[N-1] = Datos_Sum[2*N-2];
-					Trunk[N-2:FA] = Datos_Sum[(FA+FB+MB)-1:FA+FB];
-					Trunk[FA-1:0] = Datos_Sum[(FA+FB)-1:FB];
+					Trunk[N-1] = entrada[2*N-2];
+					Trunk[N-2:FA] = entrada[(FA+FB+MB)-1:FA+FB];
+					Trunk[FA-1:0] = entrada[(FA+FB)-1:FB];
 				end
 				else 
 					begin
@@ -76,9 +76,45 @@ end
 		
 	end
 
-assign Datos_Trunc = Trunk;
-assign NADA[N-1] = Datos_Sum[2*N-1];
-assign NADA[FB-1:0] = Datos_Sum[FB-1:0];	
-assign NADA[N-2:FB] = Datos_Sum[2*N-3:FA+FB+MB];
+assign resultado = Trunk;
+//assign NADA[N-1] = entrada[2*N-1];
+//assign NADA[FB-1:0] = entrada[FB-1:0];	
+//assign NADA[N-2:FB] = entrada[2*N-3:FA+FB+MB];
 
-endmodule
+endmodule*/
+
+/*
+module Truncador( */
+
+ input wire signed [2*N-1:0] entrada,
+ output wire signed [N-1:0] resultado
+);
+
+ //FORMATO DEL LA PALABRA A TRUNCAR = S1 S2 P1 P2 F1 F2
+parameter para0 = {(N-F){1'b0}};
+parameter para1 = {(N-F){1'b1}};
+
+//parameter para2 = {(2*(N-F)-1){1'b1}};
+
+//parameter suma = {1'b1,{(F){1'b0}}};
+
+parameter f1 = 2*F-1; // MSB de f1
+parameter s1 = 2*N-1; // Bit de s1
+parameter s2 = 2*N-2; // Bit de s2
+parameter p = N-F-1; // Parte Entera
+parameter p1 = N+F-1; // LSB de p1
+parameter p2 = N+F-2; // MSB de p2
+
+/*wire [2*N-1:0] numero;
+
+assign numero = (entrada[N-2]==1 && entrada[s2:F] != para2)
+					? {entrada + suma}:
+					   entrada;*/
+						
+assign resultado = (entrada[s2] == 1 && entrada[s2-1:p1] != para1)   // si el signo es negativo y NO todos los bits de s2 y p1 son 1 entonces 
+						? {entrada[s2],{(p+F){1'b0}}}:                // hay overflow y se asigna el valor más negativo
+						(entrada[s2]==0 && entrada[s2-1:p1] != para0)	   //si el signo es positivo y NO todos los bits de s2 y p1 son 0 entonces 	
+						? {entrada[s2],{(p+F){1'b1}}}:                //hay overflow y se asigna el valor más positivo
+						{entrada[s2],entrada[p2:F]}; // si no se dan esas condiciones, entonces el truncamiento si se puede realizar sin
+																				   //sin necesidad de limitarlo porque no hay overflow
+endmodule 

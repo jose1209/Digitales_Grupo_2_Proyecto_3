@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    18:34:53 09/30/2015 
+// Create Date:    15:37:27 10/12/2015 
 // Design Name: 
-// Module Name:    Mux_Ac 
+// Module Name:    Registro_para_despla 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,20 +18,23 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Mux_Fk  #(parameter N = 25 /* Valor de N*/)(
-	input wire[1:0] select,
-	input wire signed[N-1:0] fk,fk_1,fk_2,Uk,
-	output reg signed[N-1:0] Y
+module Registro_para_despla #(parameter N = 25)(
+	input wire signed [2*N-1:0] In,
+	output reg signed [2*N-1:0] fk,
+	input clk,bandera
     );
-	 
-   always @(select,fk,fk_1,fk_2,Uk)
+
+initial
+begin
+fk = 0;
+end
+
+	always@(negedge clk)
 		begin
-				case (select)
-					2'b00: Y = Uk;
-					2'b01: Y = fk;
-					2'b10: Y = fk_1;
-					2'b11: Y = fk_2;
-					default: Y = 0;
-				endcase
+			if(bandera)
+				fk <= In;
+			else
+				fk  <= fk;
 		end
+
 endmodule

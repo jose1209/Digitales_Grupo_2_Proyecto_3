@@ -20,16 +20,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Mux_Ac #(parameter N = 25 /* Valor de N*/)(
 	input wire [1:0] select,
-	input wire[N-1:0] Uk,Acum,
-	output reg[N-1:0] Y
+	input wire signed [2*N-1:0] Acum,
+	output reg signed [2*N-1:0] Y
     );
 	 
-   always @(select,Uk,Acum)
+   always @(select,Acum)
 		begin
 				case (select)
-					2'b00: Y = Uk;
-					2'b01: Y = Acum;
-					2'b10: Y = 0;
+					2'b00: Y = Acum;
+					2'b01: Y = 0;
 					default: Y = 0;
 				endcase
 		end

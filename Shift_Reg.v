@@ -19,9 +19,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Shift_Reg #(parameter N = 25)(
-	input wire[2*N-1:0] In,
+	input wire signed [2*N-1:0] In,
 	input wire shift,clk,
-	output wire[2*N-1:0] fk,fk_1,fk_2
+	output wire signed [2*N-1:0] fk,fk_1,fk_2
     );	 
 
 reg [2*N-1:0] fk_old1,fk_old2,fk_ac;
@@ -37,7 +37,7 @@ assign fk = fk_ac;
 assign fk_1 = fk_old1;
 assign fk_2 = fk_old2;
 
-always@(posedge clk)
+always@(negedge clk)
 begin
 if(shift)
 begin
