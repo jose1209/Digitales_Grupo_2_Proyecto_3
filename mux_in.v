@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    23:24:45 09/30/2015 
+// Create Date:    23:11:12 09/30/2015 
 // Design Name: 
-// Module Name:    acumulador 
+// Module Name:    mux_in 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,20 +18,20 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module acumulador#(parameter cant_bits = 25)(
-						input wire rst, clk,
-						input wire [2*cant_bits-2:0] in,
-						output reg [2*cant_bits-2:0] out
+module mux_in#(parameter cant_bits = 25)(
+					input wire signed [cant_bits-1:0] u, a, b, c, d, e,
+					input wire [3:0] selec,
+					output reg signed [cant_bits-1:0] in
     );
-	 
-initial out = in;
-	 
-always @ (posedge clk, posedge rst)
-	if(rst)
-		out <= 0;
-	else
-		begin
-			out <= in;
-		end	
-		
+
+always @ *
+	case(selec)
+		4'b0000:	in = u;
+		4'b0001:	in = a;
+		4'b0010:	in = b;
+		4'b0101:	in = c;
+		4'b0110:	in = d;
+		4'b0111:	in = e;
+		default: in = 	25'b0;
+	endcase
 endmodule

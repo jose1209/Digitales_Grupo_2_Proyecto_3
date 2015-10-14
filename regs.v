@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    23:24:45 09/30/2015 
+// Create Date:    02:19:22 10/01/2015 
 // Design Name: 
-// Module Name:    acumulador 
+// Module Name:    regs 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,20 +18,21 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module acumulador#(parameter cant_bits = 25)(
-						input wire rst, clk,
-						input wire [2*cant_bits-2:0] in,
-						output reg [2*cant_bits-2:0] out
+module regs#(parameter cant_bits = 25)(
+				input wire [cant_bits-1:0] in,
+				input wire clk, leer, rst,
+				output reg [cant_bits-1:0] out
     );
-	 
-initial out = in;
-	 
+
+initial out = 25'b0;
+
 always @ (posedge clk, posedge rst)
 	if(rst)
 		out <= 0;
 	else
-		begin
+		if(leer)
 			out <= in;
-		end	
-		
+		else
+			out <= out;
+			
 endmodule

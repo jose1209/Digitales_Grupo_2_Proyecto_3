@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    23:24:45 09/30/2015 
+// Create Date:    23:18:39 09/30/2015 
 // Design Name: 
-// Module Name:    acumulador 
+// Module Name:    operac 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,20 +18,15 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module acumulador#(parameter cant_bits = 25)(
-						input wire rst, clk,
-						input wire [2*cant_bits-2:0] in,
-						output reg [2*cant_bits-2:0] out
+module operac#(parameter cant_bits = 25)(
+					input wire signed [cant_bits-1:0] in, cte,
+					input wire signed [2*cant_bits-2:0] in_acum,
+					output reg signed [2*cant_bits-2:0] out
     );
-	 
-initial out = in;
-	 
-always @ (posedge clk, posedge rst)
-	if(rst)
-		out <= 0;
-	else
-		begin
-			out <= in;
-		end	
-		
+
+wire [2*cant_bits-2:0] aux;
+assign aux = (cte*in)+in_acum;
+
+always @ *
+	out = {aux[2*cant_bits-2],aux[2*cant_bits-3:0]};
 endmodule
