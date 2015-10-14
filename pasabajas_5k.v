@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    10:48:51 10/06/2015 
+// Create Date:    23:00:07 10/13/2015 
 // Design Name: 
-// Module Name:    pasabajas_20k 
+// Module Name:    pasabajas_5k 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module pasabajas_200 #(parameter cant_bits = 25)(
+module pasabajas_5k#(parameter cant_bits = 25)(
 							input wire clk, rst, cambiar,
 							input wire [cant_bits-1:0] uu,
 							output wire rx_2,
@@ -42,7 +42,7 @@ cntrl CNTRL (
     .sel(sel)
     );
 
-ctes_pasobajo200 MUX_CTES (
+ctes_pasobajo5k MUX_CTES (
     .sel_cte(sel), 
     .cte(cte)
     );
@@ -94,5 +94,6 @@ regs REG_Y (
     .rst(1'b0),	//--------
     .out(y)		//-----------
     );
-	 
+	 	 
 endmodule
+

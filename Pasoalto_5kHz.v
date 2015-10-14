@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    10:48:51 10/06/2015 
+// Create Date:    23:02:29 10/13/2015 
 // Design Name: 
-// Module Name:    pasabajas_20k 
+// Module Name:    Pasoalto_5kHz 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,16 +18,18 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module pasabajas_200 #(parameter cant_bits = 25)(
-							input wire clk, rst, cambiar,
-							input wire [cant_bits-1:0] uu,
+module Pasoalto_5kHz #(parameter cant_bits = 25)(
+							input wire clk, rst, rx,
+							input wire [cant_bits-1:0] u,
 							output wire rx_2,
 							output wire [cant_bits-1:0] y
     );
 
-wire [cant_bits-1:0] f, f1, f2, in, cte, out_trunc;
+wire [cant_bits-1:0] f, f1, f2, in, cte, uu, out_trunc;
 wire [2*cant_bits-2:0] in_acum, recurs;
 wire [3:0] sel;
+wire leer_y;
+reg cambiar;
 
 assign rx_2 = leer_y;
 
@@ -42,7 +44,7 @@ cntrl CNTRL (
     .sel(sel)
     );
 
-ctes_pasobajo200 MUX_CTES (
+ctes_5k MUX_CTES (
     .sel_cte(sel), 
     .cte(cte)
     );
@@ -94,5 +96,19 @@ regs REG_Y (
     .rst(1'b0),	//--------
     .out(y)		//-----------
     );
+	 
+regs REG_U (
+    .in(u), 
+    .clk(clk), 
+    .leer(rx), 
+    .rst(1'b0), 
+    .out(uu)
+    );
+	 
+always @ *
+	if(u != uu)
+		cambiar = 1;
+	else
+		cambiar = 0;
 	 
 endmodule
